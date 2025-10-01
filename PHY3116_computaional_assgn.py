@@ -16,3 +16,13 @@ def read_data():
 def starter():
     #open data file
     read_data()
+
+# possible code that will be used in the assignment
+# we have not yet decided which one to do, this will be done in week 3 meeting
+import csv # import csv module to read csv files downloaded from moodle
+def read_data():
+    with open('data.csv', mode='r') as file: # open the file
+        csvFile = csv.reader(file)
+        for lines in csvFile: 
+            print(lines)
+    return 
