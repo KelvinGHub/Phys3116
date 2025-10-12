@@ -1,0 +1,25 @@
+Meaning of columns
+Col 1 NGC number 
+Col 2 FeH
+Col 3 Age
+Col 4 half mass radius
+Col 5 magnitude in Solar magnitude (Some guessing involved)
+----------------------------------------------------------     Above from Krause21
+Col 6 Right ascension RA
+The Right Ascension of the center of the cluster in the specified equinox. This was given in equinox 2000 and with varying precision in the originating table. At present the center coordinates for the clusters are now uncertain to typically 1-2 arcseconds, and better than 1" in a few cases that have attracted especially intensive study.
+Col 7 Dec
+The Declination of the center of the cluster in the specified equinox. This was given in equinox 2000 and with varying precision in the originating table. At present the center coordinates for the clusters are now uncertain to typically 1-2 arcseconds, and better than 1" in a few cases that have attracted especially intensive study.
+
+Col 8 LII he Galactic Longitude of the center of the cluster.
+Col 9 The Galactic Latitude of the center of the cluster.
+Col 10 The distance of the cluster from the Sun, in kiloparsecs (kpc).
+Col 11 The distance of the cluster from the Galactic Center, in kiloparsecs (kpc), assuming that the distance of the Sun from the Galactic Center R0 is 8.0 kpc.
+Col 12 X_Distance
+The distance component X in a Sun-centered coordinate system, in kiloparsecs (kpc), where X points toward the Galactic center, Y points in the direction of the Galactic rotation, and Z points towards the North Galactic Pole.
+
+Col 13 Y_Distance
+The distance component Y in a Sun-centered coordinate system, in kiloparsecs (kpc), where X points toward the Galactic center, Y points in the direction of the Galactic rotation, and Z points towards the North Galactic Pole.
+
+Col 14 Z_Distance
+The distance component Z in a Sun-centered coordinate system, in kiloparsecs (kpc), where X points toward the Galactic center, Y points in the direction of the Galactic rotation, and Z points towards the North Galactic Pole.
+Col 15 
