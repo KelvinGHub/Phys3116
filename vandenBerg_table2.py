@@ -1,4 +1,3 @@
-
 #importing necessary libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +6,7 @@ from scipy import stats
 from scipy.signal import find_peaks
 
 #reading in the data
-data = pd.read_csv('Krause21.csv')
+data = pd.read_csv('vandenBerg_table2.csv')
 data = data[(data['Age'] > 0) & (data['FeH'] > -99)]
 
 #plotting the data
