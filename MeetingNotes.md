@@ -24,6 +24,6 @@ Length: 10 mins
 
 
 # Meeting 4 (week 5)
-Present: Kelvin & Kevin  
+Present: Kelvin & Kevin & Kenji 
 Agenda: Starting on the presentation: script and powerpoint slides
-Length: 15 mins
+Length: 15 mins  
