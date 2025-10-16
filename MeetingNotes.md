@@ -10,14 +10,20 @@ Great discussion
 
 
 # Meeting 2 
-Those Present: Kelvin, Kevin and Kenji
-Agenda: Decided on Option 1, assigned roles what to do 
-Length: 10 mins
+Those Present: Kelvin, Kevin and Kenji  
+Agenda: Decided on Option 1, assigned roles what to do   
+Length: 10 mins  
 
 
 # Meeting 3 (Week 4)
-Those Present: Kevin and Kenji
-Agenda: 
-Working on producing graphings for the four data sets. Start doing some analysis based on the data and graphing(?). 
-Possible discussion on constructing explanation output.
-Length: 10 mins
+Those Present: Kevin and Kenji  
+Agenda:   
+Working on producing graphings for the four data sets. Start doing some analysis based on the data and graphing(?).   
+Possible discussion on constructing explanation output.  
+Length: 10 mins  
+
+
+# Meeting 4 (week 5)
+Present: Kelvin & Kevin  
+Agenda: Starting on the presentation: script and powerpoint slides
+Length: 15 mins
