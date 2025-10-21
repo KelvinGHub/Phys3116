@@ -206,10 +206,10 @@ def starter(df, param1_1, param1_2, param2_1, param2_2):
     plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', linestyle=':', label='Upper Dividing Line')
     plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':', label='Lower Dividing Line')
     
-    if x_vals.max() > 0:
-        shift = x_vals.max() * 0.03
+    if x_vals.max() - x_vals.min() > 0:
+        shift = (x_vals.max() - x_vals.min()) * 0.02
     else:
-        shift = 0 - (x_vals.max() * 0.03)
+        shift = 0 - ((x_vals.max() - x_vals.min()) * 0.02)
     for _, row in accreted.iterrows():
         plt.text(row[name_1]+shift, row[new_col_name], 'Accreted', fontsize=9, color='red', weight='bold')
     for _, row in other_outliers.iterrows():
