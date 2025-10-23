@@ -39,24 +39,19 @@ def starter():
 
 normal, accreted, other_outliers, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
 plt.figure(figsize=(10, 6))
-plt.scatter(normal['FeH'], normal['Age'], color='grey', label='Normal Clusters')
-plt.scatter(accreted['FeH'], accreted['Age'], color='red', label='Accreted Clusters')
-plt.scatter(other_outliers['FeH'], other_outliers['Age'], color='orange', label='Other Outliers')
-x_vals = np.linspace(df['FeH'].min(), df['FeH'].max(), 100)
-plt.plot(x_vals, intercept + slope * x_vals, color='black', linestyle='--', label='Regression Line')
-# Plot upper and lower dividing lines
-plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', linestyle=':', label='Upper Dividing Line')
-plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':', label='Lower Dividing Line')
+plt.scatter(normal['Age'], normal['FeH'], color='grey', label='Normal Clusters')
+plt.scatter(accreted['Age'], accreted['FeH'], color='red', label='Accreted Clusters')
+plt.scatter(other_outliers['Age'], other_outliers['FeH'], color='orange', label='Other Outliers')
+x_vals = np.linspace(df['Age'].min(), df['Age'].max(), 100)
 for _, row in accreted.iterrows():
-    plt.text(row['FeH']+0.03, row['Age'], 'Accreted', fontsize=9, color='red', weight='bold')
+    plt.text(row['Age']+0.03, row['FeH'], 'Accreted', fontsize=9, color='red', weight='bold')
 for _, row in other_outliers.iterrows():
-    plt.text(row['FeH']+0.03, row['Age'], 'Outlier', fontsize=9, color='orange', weight='bold')
+    plt.text(row['Age']+0.03, row['FeH'], 'Outlier', fontsize=9, color='orange', weight='bold')
 
-plt.xlabel('[Fe/H]')
-plt.ylabel('Age (Gyr)')
+plt.xlabel('Age (Gyr)')
+plt.ylabel('[Fe/H]')
 plt.title('Globular Clusters Age vs [Fe/H] with Outliers')
 plt.legend()
 plt.tight_layout()
-plt.gca().invert_yaxis()
+plt.gca()
 plt.show()
-
