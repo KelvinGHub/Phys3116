@@ -19,8 +19,8 @@ def outlier(probability, df):
         upprDvdingLine = norm.ppf(1 - probability, mu, std)
         lwrDvdLine = norm.ppf(probability, mu, std)
     accreted = df[df['Residual'] < lwrDvdLine]
-    other_outliers = df[df['Residual'] > upprDvdingLine]
     normal = df[(df['Residual'] >= lwrDvdLine) & (df['Residual'] <= upprDvdingLine)]
+    other_outliers = df[df['Residual'] > upprDvdingLine]
 
     print("mean residual:", round(mu, 3))
     print("standard deviation of residual:", round(std, 3))
@@ -28,20 +28,21 @@ def outlier(probability, df):
     print("upper dividing line:", round(upprDvdingLine, 3))
     print("list of possible accreted clusters")
     print(accreted[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
+    print("list of other outlier clusters")
+    print(other_outliers[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
 
-    return normal, accreted, other_outliers, slope, intercept, lwrDvdLine, upprDvdingLine
+    return normal, accreted, slope, intercept, lwrDvdLine, upprDvdingLine
 
 def starter():
     df = pd.read_csv('Krause21.csv')
     print("Data Loaded:", len(df), "clusters")
-    normal, accreted, other_outliers, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(0.95, df)
-    return normal, accreted, other_outliers, slope, intercept, df, lwrDvdLine, upprDvdingLine
+    normal, accreted, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(0.8, df)
+    return normal, accreted, slope, intercept, df, lwrDvdLine, upprDvdingLine
 
-normal, accreted, other_outliers, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
+normal, accreted, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
 plt.figure(figsize=(10, 6))
 plt.scatter(normal['FeH'], normal['Age'], color='grey', label='Normal Clusters')
 plt.scatter(accreted['FeH'], accreted['Age'], color='red', label='Accreted Clusters')
-plt.scatter(other_outliers['FeH'], other_outliers['Age'], color='orange', label='Other Outliers')
 x_vals = np.linspace(df['FeH'].min(), df['FeH'].max(), 100)
 plt.plot(x_vals, intercept + slope * x_vals, color='black', linestyle='--', label='Regression Line')
 # Plot upper and lower dividing lines
@@ -49,12 +50,10 @@ plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', line
 plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':', label='Lower Dividing Line')
 for _, row in accreted.iterrows():
     plt.text(row['FeH']+0.03, row['Age'], 'Accreted', fontsize=9, color='red', weight='bold')
-for _, row in other_outliers.iterrows():
-    plt.text(row['FeH']+0.03, row['Age'], 'Outlier', fontsize=9, color='orange', weight='bold')
 
 plt.xlabel('[Fe/H]')
 plt.ylabel('Age (Gyr)')
-plt.title('Globular Clusters Age vs [Fe/H] with Outliers')
+plt.title('Globular Clusters Age vs [Fe/H] with Potentially Accreted Clusters')
 plt.legend()
 plt.tight_layout()
 plt.gca().invert_yaxis()
