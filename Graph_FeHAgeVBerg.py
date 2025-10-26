@@ -1,4 +1,3 @@
-# Testing out the outlier picker - Kelvin
 import numpy as np
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,28 +22,31 @@ def outlier(df, lower_probability=0.65, upper_probability=0.9):
     print("lower dividing line:", round(lwrDvdLine, 3))
     print("upper dividing line:", round(upprDvdingLine, 3))
     print("list of possible accreted clusters (younger than expected)")
-    print(potentially_accreted_young[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
+    print(potentially_accreted_young[['NGC', 'Name', 'FeH', 'Age', 'Residual']])
     print("list of possible accreted clusters (older than expected)")
-    print(potentially_accreted_old[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
+    print(potentially_accreted_old[['NGC', 'Name', 'FeH', 'Age', 'Residual']])
     return normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, lwrDvdLine, upprDvdingLine
 
 def starter():
-    df = pd.read_csv('Krause21.csv')
+    df = pd.read_csv('vandenBerg_table2.csv')
     print("Data Loaded:", len(df), "clusters")
     normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(df, lower_probability=0.65)
     return normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, df, lwrDvdLine, upprDvdingLine
 
 normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
 plt.figure(figsize=(10, 6))
-plt.scatter(normal['Age'], normal['FeH'], color='grey', label='Normal Clusters')
-plt.scatter(potentially_accreted_young['Age'], potentially_accreted_young['FeH'], color='red', label='Accreted Clusters (Younger)')
-plt.scatter(potentially_accreted_old['Age'], potentially_accreted_old['FeH'], color='blue', label='Accreted Clusters (Older)')
-x_vals = np.linspace(df['Age'].min(), df['Age'].max(), 100)
+plt.scatter(normal['FeH'], normal['Age'], color='grey', label='Normal Clusters')
+plt.scatter(potentially_accreted_young['FeH'], potentially_accreted_young['Age'], color='red', label='Potentially Accreted Clusters (Younger than Expected)')
+plt.scatter(potentially_accreted_old['FeH'], potentially_accreted_old['Age'], color='blue', label='Potentially Accreted Clusters (Older than Expected)')
+x_vals = np.linspace(df['FeH'].min(), df['FeH'].max(), 100)
+plt.plot(x_vals, intercept + slope * x_vals, color='black', linestyle='--', label='Regression Line')
+plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', linestyle=':')
+plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':')
 
-plt.xlabel('Age (Gyr)')
-plt.ylabel('[Fe/H]')
+plt.xlabel('[Fe/H]')
+plt.ylabel('Age (Gyr)')
 plt.title('Globular Clusters Age vs [Fe/H] with Potentially Accreted Clusters')
 plt.legend()
 plt.tight_layout()
-plt.gca()
+plt.gca().invert_yaxis()
 plt.show()
