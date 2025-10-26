@@ -6,50 +6,42 @@ import pandas as pd
 import statistics as st
 import scipy.stats as stats
 from scipy.stats import norm 
-def outlier(probability, df):
+def outlier(df, lower_probability=0.7, upper_probability=0.9):
     slope, intercept, *_ = stats.linregress(df['FeH'], df['Age'])
     df['Predicted_Age'] = intercept + slope * df['FeH']
     df['Residual'] = df['Age'] - df['Predicted_Age']
     mu = st.mean(df['Residual'])
     std = np.std(df['Residual'])
-    if probability > 0.5:
-        upprDvdingLine = norm.ppf(probability, mu, std)
-        lwrDvdLine = norm.ppf(1 - probability, mu, std)
-    else:
-        upprDvdingLine = norm.ppf(1 - probability, mu, std)
-        lwrDvdLine = norm.ppf(probability, mu, std)
-    accreted = df[df['Residual'] < lwrDvdLine]
-    normal = df[(df['Residual'] >= lwrDvdLine) & (df['Residual'] <= upprDvdingLine)]
-    other_outliers = df[df['Residual'] > upprDvdingLine]
+    upprDvdingLine = norm.ppf(1-lower_probability, mu, std)
+    lwrDvdLine = norm.ppf(upper_probability, mu, std)
+    potentially_accreted_old = df[df['Residual'] > lwrDvdLine]
+    potentially_accreted_young = df[df['Residual'] < upprDvdingLine]
+    normal = df[(df['Residual'] <= lwrDvdLine) & (df['Residual'] >= upprDvdingLine)]
 
     print("mean residual:", round(mu, 3))
     print("standard deviation of residual:", round(std, 3))
     print("lower dividing line:", round(lwrDvdLine, 3))
     print("upper dividing line:", round(upprDvdingLine, 3))
-    print("list of possible accreted clusters")
-    print(accreted[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
-    print("list of other outlier clusters")
-    print(other_outliers[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
-
-    return normal, accreted, slope, intercept, lwrDvdLine, upprDvdingLine
+    print("list of possible accreted clusters (younger than expected)")
+    print(potentially_accreted_young[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
+    print("list of possible accreted clusters (older than expected)")
+    print(potentially_accreted_old[['Object', 'AltName', 'FeH', 'Age', 'Residual']])
+    return normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, lwrDvdLine, upprDvdingLine
 
 def starter():
     df = pd.read_csv('Krause21.csv')
     print("Data Loaded:", len(df), "clusters")
-    normal, accreted, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(0.8, df)
-    return normal, accreted, slope, intercept, df, lwrDvdLine, upprDvdingLine
+    normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(df, lower_probability=0.6)
+    return normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, df, lwrDvdLine, upprDvdingLine
 
-normal, accreted, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
+normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
 plt.figure(figsize=(10, 6))
 plt.scatter(normal['FeH'], normal['Age'], color='grey', label='Normal Clusters')
-plt.scatter(accreted['FeH'], accreted['Age'], color='red', label='Accreted Clusters')
+plt.scatter(potentially_accreted_young['FeH'], potentially_accreted_young['Age'], color='red', label='Accreted Clusters (Younger)')
+plt.scatter(potentially_accreted_old['FeH'], potentially_accreted_old['Age'], color='blue', label='Accreted Clusters (Older)')
 x_vals = np.linspace(df['FeH'].min(), df['FeH'].max(), 100)
-plt.plot(x_vals, intercept + slope * x_vals, color='black', linestyle='--', label='Regression Line')
-# Plot upper and lower dividing lines
-plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', linestyle=':', label='Upper Dividing Line')
-plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':', label='Lower Dividing Line')
-for _, row in accreted.iterrows():
-    plt.text(row['FeH']+0.03, row['Age'], 'Accreted', fontsize=9, color='red', weight='bold')
+plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', linestyle=':')
+plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':')
 
 plt.xlabel('[Fe/H]')
 plt.ylabel('Age (Gyr)')
