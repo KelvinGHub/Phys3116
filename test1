@@ -6,7 +6,7 @@ import pandas as pd
 import statistics as st
 import scipy.stats as stats
 from scipy.stats import norm 
-def outlier(df, lower_probability=0.7, upper_probability=0.9):
+def outlier(df, lower_probability=0.65, upper_probability=0.9):
     slope, intercept, *_ = stats.linregress(df['FeH'], df['Age'])
     df['Predicted_Age'] = intercept + slope * df['FeH']
     df['Residual'] = df['Age'] - df['Predicted_Age']
