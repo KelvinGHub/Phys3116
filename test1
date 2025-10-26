@@ -31,15 +31,16 @@ def outlier(df, lower_probability=0.7, upper_probability=0.9):
 def starter():
     df = pd.read_csv('Krause21.csv')
     print("Data Loaded:", len(df), "clusters")
-    normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(df, lower_probability=0.6)
+    normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, lwrDvdLine, upprDvdingLine = outlier(df, lower_probability=0.65)
     return normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, df, lwrDvdLine, upprDvdingLine
 
 normal, potentially_accreted_young, potentially_accreted_old, slope, intercept, df, lwrDvdLine, upprDvdingLine = starter()
 plt.figure(figsize=(10, 6))
 plt.scatter(normal['FeH'], normal['Age'], color='grey', label='Normal Clusters')
-plt.scatter(potentially_accreted_young['FeH'], potentially_accreted_young['Age'], color='red', label='Accreted Clusters (Younger)')
-plt.scatter(potentially_accreted_old['FeH'], potentially_accreted_old['Age'], color='blue', label='Accreted Clusters (Older)')
+plt.scatter(potentially_accreted_young['FeH'], potentially_accreted_young['Age'], color='red', label='Potentially Accreted Clusters (Younger than Expected)')
+plt.scatter(potentially_accreted_old['FeH'], potentially_accreted_old['Age'], color='blue', label='Potentially Accreted Clusters (Older than Expected)')
 x_vals = np.linspace(df['FeH'].min(), df['FeH'].max(), 100)
+plt.plot(x_vals, intercept + slope * x_vals, color='black', linestyle='--', label='Regression Line')
 plt.plot(x_vals, intercept + slope * x_vals + upprDvdingLine, color='blue', linestyle=':')
 plt.plot(x_vals, intercept + slope * x_vals + lwrDvdLine, color='green', linestyle=':')
 
