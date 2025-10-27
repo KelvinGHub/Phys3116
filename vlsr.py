@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+pd.set_option('display.max_rows', None)
 df_harris3 = pd.read_csv('HarrisPartIII.csv', usecols=['ID', 'v_LSR'])
 df_harris3clean = df_harris3.dropna(subset=['v_LSR'])
 df_accreted = df_harris3clean[(df_harris3clean['v_LSR'] > 100) | (df_harris3clean['v_LSR'] < -100)]
